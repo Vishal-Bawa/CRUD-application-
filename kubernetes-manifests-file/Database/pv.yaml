@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual  # You can change this to match the PVC storage class if using a cloud provider
+  volumeMode: Filesystem
+  hostPath:
+    path: /mnt/data/mongo   # This path must exist on the node or be created
+

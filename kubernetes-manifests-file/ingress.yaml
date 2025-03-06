@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    # Ingress Core Settings
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # Health Check Settings
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/subnets: subnet-063d91abfb93a430d, subnet-02a4c82ada7091bfe, subnet-0982a499eb1bc80a0 ## Need to Paste Public Subnets of VPC
+    # SSL certifacte Setting
+    # SSL certifacte Setting
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:060795902985:certificate/6d432432-5985-488b-867f-4913868f3afd
+    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # Load Balancer Name
+    alb.ingress.kubernetes.io/load-balancer-name: curd-app
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port: 
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service: 
+            name: backend-service 
+            port:
+              number: 5000
