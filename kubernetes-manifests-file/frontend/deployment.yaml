@@ -15,5 +15,11 @@ spec:
       containers:
       - name: frontend
         image: vishalpuri01/frontend:v3.1
+        env:
+        - name: BACKEND_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BACKEND_API_URL
         ports:
         - containerPort: 3000
